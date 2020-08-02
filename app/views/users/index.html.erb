@@ -17,6 +17,14 @@
           <td><h5>introduction</h5></td>
           <td><%= @user.introduction %></td>
         </tr>
+        <tr>
+          <td><h5>follows</h5></td>
+          <td><%= link_to @user.follower.count, follows_path(@user.id) %></td>
+          </tr>
+          <tr>
+            <td><h5>followers</h5></td>
+            <td><%= link_to @user.followed.count, followers_path(@user.id) %></td>
+          </tr>
       </table>
 
           <p><%= link_to "", edit_user_path(@user.id), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %></p>
@@ -30,9 +38,9 @@
 
       <h5>Opinion</h5>
       <%= f.text_area :body,class: "col-xs-12" %>
-    <nav>
+
       <%= f.submit 'Create Book',class: "col-xs-12 btn btn-primary" %>
-    </nav>
+
     <% end %>
   </div>
 
@@ -56,6 +64,21 @@
         </td>
         <td>
           <%= user.name %>
+        </td>
+        <td>
+          フォロー数：<%= user.follower.count %>
+        </td>
+        <td>
+          フォロワー数：<%= user.followed.count %>
+        </td>
+        <td>
+          <% unless user == current_user %>
+          <% if current_user.following?(user) %>
+          <%= link_to 'フォロー外す', unfollow_path(user.id), method: :POST,class: "btn btn-outline-primary btn-sm" %>
+          <% else %>
+          <%= link_to 'フォローする', follow_path(user.id), method: :POST,class: "btn btn-primary btn-sm" %>
+          <% end %>
+          <% end %>
         </td>
         <td>
           <%= link_to"Show",user_path(user.id) %>

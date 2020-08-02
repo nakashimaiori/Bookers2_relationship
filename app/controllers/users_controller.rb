@@ -37,7 +37,17 @@ class UsersController < ApplicationController
     @user = current_user
     @book = Book.new
   end
-# email追加してみた
+
+  def follows
+    @user = User.find(params[:id])
+    @users = @user.follower.all
+  end
+
+  def followers
+    @user = User.find(params[:id])
+    @users = @user.followed.all
+  end
+
   private
   def user_params
     params.require(:user).permit(:name, :email, :profile_image, :introduction)
